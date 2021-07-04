@@ -506,7 +506,7 @@
 
 - (BOOL) canContinue: (DownloadInformation *) information
 {
-    NSLog(@"[INFO] canContinue ");
+    //NSLog(@"[INFO] canContinue ");
     return [self.downloadRequestUrlsThatMayProceed objectForKey:[information url]] != nil;
 }
 
