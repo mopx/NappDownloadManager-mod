@@ -2,17 +2,17 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 3.0
-apiversion: 3
-architectures: armeabi-v7a x86
+version: 5.0.0
+apiversion: 4
+architectures: arm64-v8a armeabi-v7a x86 x86_64
 description: downloadmanager-android
 author: Napp. Modified by Kosso
 license: MIT
-copyright: 2017
+copyright: 2023
 
 # these should not be edited
 name: downloadmanager-android
 moduleid: dk.napp.downloadmanager
 guid: 94ae075c-f479-4543-9193-abfe24fb4f5f
 platform: android
-minsdk: 6.0.1.GA
+minsdk: 9.0.0.GA

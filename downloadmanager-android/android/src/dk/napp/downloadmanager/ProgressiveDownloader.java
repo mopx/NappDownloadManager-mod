@@ -17,13 +17,12 @@ import java.util.UUID;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.NetworkCapabilities;
 import android.util.Log;
 
 
@@ -1001,23 +1000,22 @@ public class ProgressiveDownloader {
 	}
 	
 	private EnumSet<NetworkTypes> getNetworkTypes() {
-		NetworkInfo netInfo = _connectivityManager.getActiveNetworkInfo();
-		
-		if (netInfo != null)
+		NetworkCapabilities capabilities = _connectivityManager.getNetworkCapabilities(_connectivityManager.getActiveNetwork());
+
+		if (capabilities != null)
 		{
-			int netType = netInfo.getType();
-			if (netType == ConnectivityManager.TYPE_WIFI)
+			if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
 			{
 				return EnumSet.of(NetworkTypes.Wireless80211);
-			} 
-			else if (netType == ConnectivityManager.TYPE_MOBILE)
+			}
+			else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
 			{
 				return NetworkTypes.Mobile;
 			}
 		}
-		
+
 		return EnumSet.of(NetworkTypes.None);
-	
+
 	}
 	
 	/// <summary>
@@ -1142,8 +1140,8 @@ public class ProgressiveDownloader {
 						Log.d(LCAT, "File length and available length were different so using file length");	
 						downloadRequest.setAvailableLength(file.length());
 					}
-					
-					webRequest1 = new DefaultHttpClient();
+
+					webRequest1 = HttpClientBuilder.create().build();
 					HttpGet request = new HttpGet(new URI(downloadRequest.getUrl()));
 					//request.setURI(new URI(downloadRequest.getUrl()));
 					
